@@ -1,0 +1,25 @@
+# Dependencias
+node_modules/
+
+# Salidas de build
+dist/
+public/
+pasaporte/
+*.tsbuildinfo
+
+# Artefactos de AWS SAM
+.aws-sam/
+samconfig.toml
+
+# Logs y temporales
+*.log
+npm-debug.log*
+.DS_Store
+
+# Entorno
+.env
+.env.*
+!.env.example
+
+# Cobertura de pruebas
+coverage/
