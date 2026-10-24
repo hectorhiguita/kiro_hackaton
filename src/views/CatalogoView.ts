@@ -35,7 +35,7 @@ function crearTarjetaStand(stand: Stand): HTMLElement {
   tarjeta.className = "stand-card";
   tarjeta.innerHTML = `
     <h3 class="stand-nombre"></h3>
-    <div class="stand-qr" aria-label="Código QR del stand"></div>
+    <button class="stand-qr" type="button" title="Ampliar QR" aria-label="Ampliar código QR del stand"></button>
     <code class="stand-codigo"></code>
     <button class="secundario btn-descargar">Descargar QR</button>
   `;
@@ -44,7 +44,7 @@ function crearTarjetaStand(stand: Stand): HTMLElement {
   tarjeta.querySelector<HTMLHeadingElement>(".stand-nombre")!.textContent = stand.nombre;
   tarjeta.querySelector<HTMLElement>(".stand-codigo")!.textContent = stand.codigoQR;
 
-  const contenedorQR = tarjeta.querySelector<HTMLDivElement>(".stand-qr")!;
+  const contenedorQR = tarjeta.querySelector<HTMLButtonElement>(".stand-qr")!;
   const btnDescargar = tarjeta.querySelector<HTMLButtonElement>(".btn-descargar")!;
 
   QRCode.toCanvas(destino, { width: 200, margin: 1 })
@@ -53,8 +53,12 @@ function crearTarjetaStand(stand: Stand): HTMLElement {
     })
     .catch(() => {
       contenedorQR.textContent = "No se pudo generar el QR";
+      contenedorQR.disabled = true;
       btnDescargar.disabled = true;
     });
+
+  // Click en el QR -> abre el popup grande (sin descargar).
+  contenedorQR.addEventListener("click", () => abrirModalQR(stand.nombre, destino));
 
   btnDescargar.addEventListener("click", async () => {
     try {
@@ -78,4 +82,45 @@ function slug(nombre: string): string {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+/** Abre un popup grande con el QR del stand (solo visualización, sin descarga). */
+export function abrirModalQR(nombreStand: string, destino: string): void {
+  const overlay = document.createElement("div");
+  overlay.className = "qr-modal-overlay";
+  overlay.innerHTML = `
+    <div class="qr-modal" role="dialog" aria-modal="true" aria-label="Código QR ampliado">
+      <button class="qr-modal-cerrar" type="button" aria-label="Cerrar">&times;</button>
+      <h3 class="qr-modal-titulo"></h3>
+      <div class="qr-modal-imagen"></div>
+      <p class="qr-modal-ayuda">Escanea este código para registrar tu asistencia.</p>
+    </div>
+  `;
+
+  overlay.querySelector<HTMLHeadingElement>(".qr-modal-titulo")!.textContent = nombreStand;
+
+  const imagen = overlay.querySelector<HTMLDivElement>(".qr-modal-imagen")!;
+  // Tamaño grande, ajustado al viewport.
+  const lado = Math.min(window.innerWidth, window.innerHeight) * 0.7;
+  QRCode.toCanvas(destino, { width: Math.round(lado), margin: 2 })
+    .then((canvas) => imagen.replaceChildren(canvas))
+    .catch(() => {
+      imagen.textContent = "No se pudo generar el QR";
+    });
+
+  const cerrar = (): void => {
+    document.removeEventListener("keydown", onKey);
+    overlay.remove();
+  };
+  const onKey = (e: KeyboardEvent): void => {
+    if (e.key === "Escape") cerrar();
+  };
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) cerrar(); // clic fuera del modal
+  });
+  overlay.querySelector<HTMLButtonElement>(".qr-modal-cerrar")!.addEventListener("click", cerrar);
+  document.addEventListener("keydown", onKey);
+
+  document.body.appendChild(overlay);
 }

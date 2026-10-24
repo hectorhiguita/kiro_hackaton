@@ -444,3 +444,111 @@ code {
   margin-top: 0.3rem;
   width: 100%;
 }
+
+/* ----------------------- QR clicable en tarjeta ------------------------ */
+
+button.stand-qr {
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  box-shadow: none;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+button.stand-qr:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 0 3px var(--border-glow);
+  filter: none;
+}
+
+/* --------------------------- Modal del QR ------------------------------ */
+
+.qr-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(8, 6, 18, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: aparecer 0.2s ease both;
+}
+
+.qr-modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  max-width: 92vw;
+  padding: 1.6rem;
+  background: var(--grad-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-glow), var(--shadow);
+}
+
+.qr-modal::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--grad-kiro);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.qr-modal-titulo {
+  margin: 0.2rem 0 0;
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.qr-modal-imagen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: #fff;
+  border-radius: var(--radius-sm);
+}
+
+.qr-modal-imagen canvas {
+  display: block;
+  max-width: 70vmin;
+  height: auto;
+}
+
+.qr-modal-ayuda {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.qr-modal-cerrar {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.6rem;
+  margin: 0;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  line-height: 1;
+  font-size: 1.5rem;
+  background: transparent;
+  color: var(--text-muted);
+  box-shadow: none;
+  border-radius: 999px;
+}
+
+.qr-modal-cerrar:hover {
+  background: var(--surface-2);
+  color: var(--text);
+  transform: none;
+  filter: none;
+  box-shadow: none;
+}
