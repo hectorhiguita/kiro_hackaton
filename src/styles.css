@@ -381,3 +381,66 @@ code {
   border-radius: 6px;
   font-size: 0.78rem;
 }
+
+/* ---------------------------- Stands grid ------------------------------ */
+
+.stands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.stand-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+  padding: 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.18s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.stand-card:hover {
+  border-color: var(--kiro-purple);
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 3px var(--border-glow);
+}
+
+.stand-nombre {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.stand-qr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem;
+  background: #fff;
+  border-radius: var(--radius-sm);
+  min-height: 200px;
+  width: 100%;
+}
+
+.stand-qr canvas {
+  display: block;
+  border-radius: 4px;
+}
+
+.stand-codigo {
+  font-size: 0.7rem;
+  word-break: break-all;
+  background: transparent;
+  color: var(--text-dim);
+  padding: 0;
+}
+
+.stand-card .btn-descargar {
+  margin-top: 0.3rem;
+  width: 100%;
+}
