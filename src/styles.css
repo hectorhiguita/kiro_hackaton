@@ -70,3 +70,14 @@ button.secundario { background: #e1e5ea; }
 .hoja .estado.visitado { color: var(--ok); font-weight: 700; }
 .hoja .estado.pendiente { color: #999; }
 #qr-reader { margin-top: 1rem; }
+.inicio { text-align: center; }
+.qr-registro {
+  display: flex;
+  justify-content: center;
+  margin: 1rem auto;
+  min-height: 256px;
+  align-items: center;
+}
+.qr-registro canvas { border-radius: 8px; }
+.qr-url { font-size: .85rem; word-break: break-all; }
+.qr-url a { color: var(--aws); }

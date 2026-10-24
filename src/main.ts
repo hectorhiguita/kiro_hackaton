@@ -5,6 +5,7 @@ import { HttpCatalogService } from "./services/CatalogService.ts";
 import { PassportService } from "./services/PassportService.ts";
 import { AttendanceService } from "./services/AttendanceService.ts";
 import { PortabilityService } from "./services/PortabilityService.ts";
+import { renderInicio } from "./views/InicioView.ts";
 import { renderRegistro } from "./views/RegistroView.ts";
 import { renderPasaporte } from "./views/PasaporteView.ts";
 import { renderEscaner } from "./views/EscanerView.ts";
@@ -21,6 +22,7 @@ const app = document.getElementById("app") as HTMLElement;
 const nav = document.getElementById("nav") as HTMLElement;
 
 const RUTAS = [
+  { hash: "#/inicio", etiqueta: "Inicio" },
   { hash: "#/registro", etiqueta: "Registro" },
   { hash: "#/pasaporte", etiqueta: "Mi pasaporte" },
   { hash: "#/scan", etiqueta: "Escanear" },
@@ -42,7 +44,7 @@ function renderNav(activo: string): void {
 }
 
 function parseHash(): { ruta: string; qr?: string } {
-  const h = window.location.hash || "#/pasaporte";
+  const h = window.location.hash || "#/inicio";
   const [ruta, query] = h.split("?");
   let qr: string | undefined;
   if (query) {
@@ -66,8 +68,11 @@ function render(): void {
       renderCatalogo(app, catalog);
       break;
     case "#/pasaporte":
-    default:
       renderPasaporte(app, passportService, portability, cookies, navegar);
+      break;
+    case "#/inicio":
+    default:
+      renderInicio(app, navegar);
       break;
   }
 }
@@ -81,7 +86,7 @@ async function iniciar(): Promise<void> {
     // Si el catálogo no carga, la app sigue operando con catálogo vacío.
   }
   if (!window.location.hash) {
-    window.location.hash = cookies.getIdentidad() ? "#/pasaporte" : "#/registro";
+    window.location.hash = cookies.getIdentidad() ? "#/pasaporte" : "#/inicio";
   }
   render();
 }
