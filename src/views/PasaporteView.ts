@@ -49,13 +49,22 @@ export function renderPasaporte(
       <p><strong>${p.visitados} / ${p.total}</strong> stands visitados</p>
       <div class="progreso-barra"><div class="progreso-relleno" style="width:${pct}%"></div></div>
       ${filas || "<p>No hay stands en el catálogo todavía.</p>"}
+      <button id="btn-escanear">Escanear stand</button>
       <button id="btn-exportar" class="secundario">Exportar pasaporte</button>
       <button id="btn-importar" class="secundario">Importar pasaporte</button>
+      <button id="btn-salir" class="secundario">Cerrar sesión</button>
       <input id="file-importar" type="file" accept="application/json" style="display:none" />
       <div id="msg"></div>
     </div>`;
 
   const msg = contenedor.querySelector<HTMLDivElement>("#msg")!;
+
+  contenedor.querySelector("#btn-escanear")!.addEventListener("click", () => navegar("#/scan"));
+
+  contenedor.querySelector("#btn-salir")!.addEventListener("click", () => {
+    cookies.limpiarIdentidad();
+    navegar("#/registro");
+  });
 
   contenedor.querySelector("#btn-exportar")!.addEventListener("click", () => {
     const exp = portability.exportar(identidad.documento);

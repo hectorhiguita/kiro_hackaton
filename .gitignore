@@ -3,9 +3,10 @@ node_modules/
 
 # Salidas de build
 dist/
-public/
-pasaporte/
 *.tsbuildinfo
+
+# Proyecto de referencia (no forma parte del sitio desplegado)
+pasaporte/
 
 # Artefactos de AWS SAM
 .aws-sam/
